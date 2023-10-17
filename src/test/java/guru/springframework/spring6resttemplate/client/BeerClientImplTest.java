@@ -18,6 +18,7 @@ class BeerClientImplTest {
     @Autowired
     BeerClientImpl beerClient;
 
+
     @Test
     void testDeleteBeer(){
         BeerDTO newDto = BeerDTO.builder()
