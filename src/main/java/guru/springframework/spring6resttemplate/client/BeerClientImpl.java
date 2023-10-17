@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.UUID;
 
 /**
@@ -23,6 +24,30 @@ public class BeerClientImpl implements BeerClient {
     private final RestTemplateBuilder restTemplateBuilder;
     private static final String GET_BEER_PATH = "/api/v1/beer";
     private static final String GET_BEER_BY_ID_PATH = "/api/v1/beer/{beerId}";
+
+    @Override
+    public void deleteBeer(UUID beerId) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        restTemplate.delete(GET_BEER_BY_ID_PATH,beerId);
+    }
+
+    @Override
+    public BeerDTO updateBeer(BeerDTO beerDTO) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        restTemplate.put(GET_BEER_BY_ID_PATH,beerDTO,beerDTO.getId());
+        return getBeerById(beerDTO.getId());
+    }
+
+    @Override
+    public BeerDTO createBeer(BeerDTO newDto) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+
+        //ResponseEntity<BeerDTO> response = restTemplate.postForEntity(GET_BEER_PATH,newDto, BeerDTO.class);
+        URI uri = restTemplate.postForLocation(GET_BEER_PATH,newDto);
+
+        return restTemplate.getForObject(uri.getPath(),BeerDTO.class);
+    }
+
 
     @Override
     public BeerDTO getBeerById(UUID beerId) {
