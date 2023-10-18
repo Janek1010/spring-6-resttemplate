@@ -69,12 +69,12 @@ public class BeerClientMockTest {
     @Test
     void testDeleteBeer() {
         server.expect(method(HttpMethod.DELETE))
-                .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH,
-                        dto.getId()))
+                .andExpect(requestToUriTemplate(URL+BeerClientImpl.GET_BEER_BY_ID_PATH, dto.getId()))
                 .andRespond(withNoContent());
 
         beerClient.deleteBeer(dto.getId());
 
+        // nic nie zwraca delete, wiec ta metoda testujemy czy zostalo cos w mocku wykonane
         server.verify();
     }
 
